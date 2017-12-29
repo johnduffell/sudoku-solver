@@ -207,6 +207,19 @@ object Sudoku {
 
     }
 
+    def fromBlocksVerticalList(blocks: List[UniqueZone]): Board = {
+      Board.fromColumnsList(
+        blocks.grouped(3).toList.flatMap { blocksInTop =>
+          List(
+            blocksInTop.flatMap(_.firstTrio),
+            blocksInTop.flatMap(_.middleTrio),
+            blocksInTop.flatMap(_.lastTrio)
+          ).map(UniqueZone.fromList)
+        }
+      )
+
+    }
+
   }
 
 }

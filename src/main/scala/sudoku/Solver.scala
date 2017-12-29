@@ -191,7 +191,13 @@ object Solver {
       trioFiltered <- filterWithinZoneIfKnownWithinBlockTrio(trioFilteredHorizontal.blocksVertical, trioFilteredHorizontal.columns)
         .map(Board.fromColumnsList)
 
-      filteredGroups <- trioFiltered.mapAll[Counter] { zone =>
+      trioBlocksFilteredHorizontal <- filterWithinZoneIfKnownWithinBlockTrio(trioFiltered.rows, trioFiltered.blocks)
+        .map(Board.fromBlocksList)
+
+      trioBlocksFilteredVertical <- filterWithinZoneIfKnownWithinBlockTrio(trioBlocksFilteredHorizontal.columns, trioBlocksFilteredHorizontal.blocksVertical)
+        .map(Board.fromBlocksVerticalList)
+
+      filteredGroups <- trioBlocksFilteredVertical.mapAll[Counter] { zone =>
         liftCellsToZone(filterWithinZoneAllGroupSizes)(monad)(zone)
       }
     } yield filteredGroups).run
